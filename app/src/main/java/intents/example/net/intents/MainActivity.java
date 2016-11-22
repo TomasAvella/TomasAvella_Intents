@@ -1,6 +1,7 @@
 package intents.example.net.intents;
 
 import android.Manifest;
+import android.app.SearchManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -22,12 +23,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button maps = (Button)findViewById(R.id.button_maps);
         Button foto = (Button)findViewById(R.id.button_foto);
         Button correo = (Button)findViewById(R.id.button_correo);
+        Button busqueda = (Button)findViewById(R.id.button_busqueda);
+        Button dialer = (Button)findViewById(R.id.button_dialer);
+        Button street = (Button)findViewById(R.id.button_street);
+        Button compartir = (Button)findViewById(R.id.button_compartir);
 
         web.setOnClickListener(this);
         telefono.setOnClickListener(this);
         maps.setOnClickListener(this);
         foto.setOnClickListener(this);
         correo.setOnClickListener(this);
+        busqueda.setOnClickListener(this);
+        dialer.setOnClickListener(this);
+        street.setOnClickListener(this);
+        compartir.setOnClickListener(this);
     }
 
     @Override
@@ -47,6 +56,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.button_correo:
                 mandarCorreo(v);
+                break;
+            case R.id.button_busqueda:
+                lanzarBusqueda(v);
+                break;
+            case R.id.button_dialer:
+                lanzarDialer(v);
+                break;
+            case R.id.button_street:
+                lanzarStreet(v);
+                break;
+            case R.id.button_compartir:
+                lanzarCompartir(v);
                 break;
         }
     }
@@ -80,5 +101,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         intent.putExtra(Intent.EXTRA_TEXT, "texto del correo");
         intent.putExtra(Intent.EXTRA_EMAIL, new String[] {"smira@iesperemaria.com" });
         startActivity(intent);
+    }
+    public void lanzarBusqueda(View view){
+        Intent intent = new Intent(Intent.ACTION_WEB_SEARCH );
+        intent.putExtra(SearchManager.QUERY, "IES Pere maria");
+    }
+    public void lanzarDialer(View view){
+        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:966870700"));
+        startActivity(intent);
+    }
+    public void lanzarStreet(View view){
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("google.streetview:cbll=38.553468,-0.121579"));
+        intent.setPackage("com.google.android.apps.maps");
+        startActivity(intent);
+    }
+    public void lanzarCompartir(View view){
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_TEXT, "Compartido desde IES Pere Maria Orts!!");
+        intent.setType("text/plain");
+        startActivity(Intent.createChooser(intent,"Compartir con ..."));
     }
 }
